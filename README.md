@@ -6,3 +6,6 @@
 - 相关下载链接
 [Google Play](https://play.google.com/store/apps/details?id=com.mobiledynamix.crossme&hl=en_US)
 [App Store](https://apps.apple.com/us/app/nonograms-crossme/id574857255)
+[截屏裁剪工具](https://www.iloveimg.com/zh-cn/crop-image)
+
+每张图片宽为900，高度上边为卷轴黑框下边缘，下边为两个按钮的最上边
