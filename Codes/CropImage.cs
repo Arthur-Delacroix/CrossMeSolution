@@ -15,7 +15,6 @@ public class CropImage : MonoBehaviour
 
     public string outputPath = "z.jpg";
 
-
     void Start()
     {
         Mat croppedMat = new Mat();
@@ -41,42 +40,33 @@ public class CropImage : MonoBehaviour
         // 找到最佳匹配位置  
         Core.MinMaxLocResult mmr_d = Core.minMaxLoc(resultDown);
         Point matchLoc_d = mmr_d.maxLoc;
-        /*
-                if (mmr_d.maxVal >= threshold)
-                {
-                    Debug.Log("找到匹配，开始裁剪");
 
-                    // 计算裁剪区域
-                    int y = (int)matchLoc_d.y;
-                    //Debug.Log("匹配位置: " + y);
-                    //int cropHeight = imgA.rows() - y;
-                    //int cropHeight =  y;
+        if (mmr_d.maxVal >= threshold)
+        {
+            Debug.Log("找到匹配，开始裁剪");
 
-                    // 定义裁剪区域 (x, y, width, height)  
-                    OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, 0, imgA.cols(), y);
-                    //OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, y, imgA.cols(), cropHeight);
-                    croppedMat = new Mat(imgA, cropArea);
-                    //Mat croppedMat = new Mat()
+            // 计算裁剪区域
+            int y = (int)matchLoc_d.y;
+            //Debug.Log("匹配位置: " + y);
+            //int cropHeight = imgA.rows() - y;
+            //int cropHeight =  y;
 
-                    // 保存结果  
-                    //string outputFullPath = System.IO.Path.Combine(Application.streamingAssetsPath, outputPath);
-                    //Imgcodecs.imwrite(outputFullPath, croppedMat);
-                    //Debug.Log("裁剪完成，保存路径: " + outputFullPath);
+            // 定义裁剪区域 (x, y, width, height)  
+            OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, 0, imgA.cols(), y);
+            croppedMat = new Mat(imgA, cropArea);
+        }
+        else
+        {
+            Debug.Log("未找到匹配");
+        }
 
-                    //croppedMat.Dispose();
-
-
-
-                }
-                else
-                {
-                    Debug.Log("未找到匹配");
-                }
-        */
 
         //上半部分匹配
+        Mat grayB = new Mat();
+        Imgproc.cvtColor(croppedMat, grayB, Imgproc.COLOR_BGR2GRAY);
+
         Mat resultUp = new Mat();
-        Imgproc.matchTemplate(grayA, grayUpImg, resultUp, Imgproc.TM_CCOEFF_NORMED);
+        Imgproc.matchTemplate(grayB, grayUpImg, resultUp, Imgproc.TM_CCOEFF_NORMED);
 
         Core.MinMaxLocResult mmr_u = Core.minMaxLoc(resultUp);
         Point matchLoc_u = mmr_u.maxLoc;
@@ -85,42 +75,28 @@ public class CropImage : MonoBehaviour
         {
             // 计算裁剪区域
             int y = (int)matchLoc_u.y;
-            int cropHeight = imgA.rows() - y - 55;
-
-            //OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, y - 55, croppedMat.cols(), cropHeight);
-
-            //Mat croppedMat_up = new Mat(croppedMat, cropArea);
-
-            //// 保存结果  
-            //string outputFullPath = System.IO.Path.Combine(Application.streamingAssetsPath, outputPath);
-            //Imgcodecs.imwrite(outputFullPath, croppedMat_up);
-            //Debug.Log("裁剪完成，保存路径: " + outputFullPath);
-
+            //这里计算纵向截取区域，也就是纵向总高 - 匹配位置(匹配位置为左上角) - 匹配的图片高度
+            int cropHeight = croppedMat.rows() - y - 55;
 
             // 定义裁剪区域 (x, y, width, height)  
-            OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, 0, imgA.cols(), y);
-            //OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, y, imgA.cols(), cropHeight);
-            croppedMat = new Mat(imgA, cropArea);
-            //Mat croppedMat = new Mat()
+            //Rect的含义 x为横向从哪开始，y为纵向从哪开始，width为横向截取的宽度，height为纵向截取的高度
+            //这里的结果就是，从左边x=0开始，高从识别到的区域最上面-识别图高度开始，截取出识别图宽度，和剩余高度区域
+            OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, y + 55, croppedMat.cols(), cropHeight);
+            croppedMat = new Mat(croppedMat, cropArea);
+
+            //横向截取固定宽度
+            int cropWidth = 110;
+            //剩余宽度
+            int remainWidth = 905;
+            OpenCVForUnity.CoreModule.Rect cropArea2 = new OpenCVForUnity.CoreModule.Rect(cropWidth, 0, remainWidth, croppedMat.rows());
+            croppedMat = new Mat(croppedMat, cropArea2);
+
+
 
             // 保存结果  
             string outputFullPath = System.IO.Path.Combine(Application.streamingAssetsPath, outputPath);
             Imgcodecs.imwrite(outputFullPath, croppedMat);
             Debug.Log("裁剪完成，保存路径: " + outputFullPath);
         }
-
-
-
-
-
-
-
-
-        // 释放资源  
-        imgA.Dispose();
-        downImg.Dispose();
-        grayA.Dispose();
-        grayDownImg.Dispose();
-        resultDown.Dispose();
     }
 }
