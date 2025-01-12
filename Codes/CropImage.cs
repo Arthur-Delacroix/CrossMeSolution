@@ -3,6 +3,7 @@ using System.IO;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgcodecsModule;
 using OpenCVForUnity.ImgprocModule;
+using System.Collections.Generic;
 
 public class CropImage : MonoBehaviour
 {
@@ -15,7 +16,21 @@ public class CropImage : MonoBehaviour
 
     public string outputPath = "z.jpg";
 
-    void Start()
+    private string[] imgNames;//用于存储所有要转换的图片 的完整路径
+    private string folderPath = "Pics";//图片文件夹的路径
+    private void Start()
+    {
+        string fullPath = Path.Combine(Application.streamingAssetsPath, folderPath);
+
+        imgNames = Directory.GetFiles(fullPath, "*.JPG");
+
+        foreach (string imgName in imgNames)
+        {
+            //Debug.Log("开始处理图片: " + Path.GetFileName(imgName));
+        }
+    }
+
+    private void aaa()
     {
         Mat croppedMat = new Mat();
 
