@@ -3,41 +3,41 @@ using System.IO;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgcodecsModule;
 using OpenCVForUnity.ImgprocModule;
-using System.Collections.Generic;
 
 public class CropImage : MonoBehaviour
 {
     private string featureImg_Up = "Up.jpg";//上半部分 特征图 的路径
     private string featureImg_Down = "Down.jpg";//下半部分 特征图 的路径
-    private string outputImg_Path;//输出图片的路径
+    private string outputImg_Path = "OutPath";//输出图片的路径
     private float threshold = 0.95f;//匹配阈值
-
-    public string imageAPath = "a.jpg";//用于被裁剪的图片
-
-    public string outputPath = "z.jpg";
 
     private string[] imgNames;//用于存储所有要转换的图片 的完整路径
     private string folderPath = "Pics";//图片文件夹的路径
+
+    Mat upImg;
+    Mat downImg;
     private void Start()
     {
+        //读取上下两个用于识别的特征图
+        featureImg_Up = Path.Combine(Application.streamingAssetsPath, featureImg_Up);
+        featureImg_Down = Path.Combine(Application.streamingAssetsPath, featureImg_Down);
+        upImg = Imgcodecs.imread(featureImg_Up);
+        downImg = Imgcodecs.imread(featureImg_Down);
+
         string fullPath = Path.Combine(Application.streamingAssetsPath, folderPath);
 
         imgNames = Directory.GetFiles(fullPath, "*.JPG");
 
         foreach (string imgName in imgNames)
         {
-            //Debug.Log("开始处理图片: " + Path.GetFileName(imgName));
+            Mat sourceImg = Imgcodecs.imread(imgName);
+            CutPicture(sourceImg, Path.GetFileName(imgName));
         }
     }
 
-    private void aaa()
+    private void CutPicture(Mat imgA, string imgName)
     {
         Mat croppedMat = new Mat();
-
-        // 加载图片  
-        Mat imgA = Imgcodecs.imread(Application.streamingAssetsPath + "/" + imageAPath);
-        Mat upImg = Imgcodecs.imread(Application.streamingAssetsPath + "/" + featureImg_Up);
-        Mat downImg = Imgcodecs.imread(Application.streamingAssetsPath + "/" + featureImg_Down);
 
         // 转换为灰度图  
         Mat grayA = new Mat();
@@ -48,7 +48,6 @@ public class CropImage : MonoBehaviour
         Imgproc.cvtColor(downImg, grayDownImg, Imgproc.COLOR_BGR2GRAY);
 
         //下半部分匹配
-        // 模板匹配  
         Mat resultDown = new Mat();
         Imgproc.matchTemplate(grayA, grayDownImg, resultDown, Imgproc.TM_CCOEFF_NORMED);
 
@@ -62,9 +61,6 @@ public class CropImage : MonoBehaviour
 
             // 计算裁剪区域
             int y = (int)matchLoc_d.y;
-            //Debug.Log("匹配位置: " + y);
-            //int cropHeight = imgA.rows() - y;
-            //int cropHeight =  y;
 
             // 定义裁剪区域 (x, y, width, height)  
             OpenCVForUnity.CoreModule.Rect cropArea = new OpenCVForUnity.CoreModule.Rect(0, 0, imgA.cols(), y);
@@ -74,7 +70,6 @@ public class CropImage : MonoBehaviour
         {
             Debug.Log("未找到匹配");
         }
-
 
         //上半部分匹配
         Mat grayB = new Mat();
@@ -106,10 +101,8 @@ public class CropImage : MonoBehaviour
             OpenCVForUnity.CoreModule.Rect cropArea2 = new OpenCVForUnity.CoreModule.Rect(cropWidth, 0, remainWidth, croppedMat.rows());
             croppedMat = new Mat(croppedMat, cropArea2);
 
-
-
             // 保存结果  
-            string outputFullPath = System.IO.Path.Combine(Application.streamingAssetsPath, outputPath);
+            string outputFullPath = Path.Combine(Application.streamingAssetsPath, outputImg_Path, imgName);
             Imgcodecs.imwrite(outputFullPath, croppedMat);
             Debug.Log("裁剪完成，保存路径: " + outputFullPath);
         }
