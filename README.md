@@ -21,3 +21,7 @@
 - 由于本人unity C#比较熟练，所以使用特征图上下裁剪在Unity中进行了实现，具体代码实现可以查看仓库中的CropImage.cs脚本，所用到的特征图也在其中
 - unity项目中使用了第三方的[OpenCV for Unity](https://assetstore.unity.com/packages/tools/integration/opencv-for-unity-21088)插件
 - 制作视频使用unity recorder插件进行录屏制作
+  - 图片为每5秒切换一次，切换图片的计时器偷懒使用了dotweenn
+  - 在timeline中创建recorder track进行录制 输出参数为 FHD-1080p，16:9(1.7778)，H.264 MP4，High
+  - 因为切换图片代码使用了`DOVirtual.DelayedCall`方法，所以在钱5秒回空着，这里就偷懒将recorder track从第4秒开始录制了
+  - 因为recorder不能和dotween的计时器完全同步，dotween回慢1秒，所以从第4秒开始录制
