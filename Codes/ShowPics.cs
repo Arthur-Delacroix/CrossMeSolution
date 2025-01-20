@@ -17,6 +17,8 @@ public class ShowPics : MonoBehaviour
 
     [SerializeField] private float intervalTime = 5.0f;//图片切换间隔时间
 
+    [SerializeField] private Text titleText;//当前图片的标题
+
     private void Start()
     {
         LoadPic();
@@ -30,7 +32,9 @@ public class ShowPics : MonoBehaviour
             {
                 Debug.Log("加载第" + startIndex + "张图片");
 
-                Texture2D img = Resources.Load<Texture2D>("2." + startIndex);
+                Texture2D img = Resources.Load<Texture2D>("Pics/2." + startIndex);
+
+                titleText.text = "2." + startIndex;
 
                 if (img.height > screenHeight && img.width < screenWidth)//只有图片高度大于屏幕最大高度
                 {
