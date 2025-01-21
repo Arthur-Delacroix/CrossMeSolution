@@ -2,13 +2,14 @@
 
 此仓库收录CrossMe游戏中所有的答案图片，包括黑白版和彩色版，答案会尽量与Apple AppStore更新的迷题同步
 
-- App Store [下载链接](https://apps.apple.com/us/app/nonograms-crossme/id574857255)
+- [App Store 下载链接](https://apps.apple.com/us/app/nonograms-crossme/id574857255)
 - [个人博客答案页面](https://arthur-delacroix.github.io/tags/Nonogram/)
-  - 普通版和彩色版均不会收录第一章的所有迷题，因为太简单了
-  - 答案编号与APP内迷题编号对应，方便查询
-- B站视频链接
-  - 每个视频包含100个答案，每个答案时长5秒
-- 欢迎有时间的小伙伴贡献答案
+- [B站视频链接](https://www.bilibili.com/video/BV1ww4dzCECg/?spm_id_from=333.1387.homepage.video_card.click&vd_source=5146fa881c829ea55b6954babc75e637)
+
+- 普通版和彩色版均不会收录第一章的所有迷题，因为太简单了
+- 答案编号与APP内迷题编号对应，方便查询
+- 每个视频包含50个答案，每个答案时长5秒
+- 欢迎小伙伴贡献答案
 
 # 其他
 - 当前迷题答案图片使用iPhone 11 Pro截图，原始分辨率为1125x2436
