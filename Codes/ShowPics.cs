@@ -4,9 +4,8 @@ using UnityEngine.UI;
 
 public class ShowPics : MonoBehaviour
 {
-    private string folderPath = "Pics";//图片文件夹的路径
-    private string[] imgNames;//用于存储所有要转换的图片 的完整路径
-
+    public string pathPrefix;//"Pics/2."
+    public string filePrefix;//"2."
     public int startIndex = 1;//起始图片序号
     public int maxIndex = 10;//最大图片序号
     public RawImage rawImage;//显示图片的RawImage组件
@@ -32,9 +31,9 @@ public class ShowPics : MonoBehaviour
             {
                 Debug.Log("加载第" + startIndex + "张图片");
 
-                Texture2D img = Resources.Load<Texture2D>("Pics/2." + startIndex);
+                Texture2D img = Resources.Load<Texture2D>(pathPrefix + startIndex);
 
-                titleText.text = "2." + startIndex;
+                titleText.text = filePrefix + startIndex;
 
                 if (img.height > screenHeight && img.width < screenWidth)//只有图片高度大于屏幕最大高度
                 {
