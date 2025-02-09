@@ -2,6 +2,9 @@
 using DG.Tweening;
 using UnityEngine.UI;
 
+//这里要注意，保存在Resources文件夹中的图片，格式为Sprite(2D and UI)
+//不然的话，图片会被强制变成2的幂次，图片就会变形
+
 public class ShowPics : MonoBehaviour
 {
     public string pathPrefix;//"Pics/2."
