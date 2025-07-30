@@ -19,3 +19,4 @@
 - 上传到仓库中的图片还会使用工具进行二次压缩
 - 图片尺寸会压缩为原来的50%，体积压缩为原来的20%，这样在保证视觉效果不影响的前提下最大减小了图片的体积，格式转换、压缩工具也在仓库中，具体查看Tools.zip压缩包
 - 由于本人unity C#比较熟练，所以使用特征图上下裁剪在Unity中进行了实现，具体代码实现可以查看仓库中的CropImage.cs脚本，所用到的特征图也在其中
+- unity项目中使用了第三方的[OpenCV for Unity](https://assetstore.unity.com/packages/tools/integration/opencv-for-unity-21088)插件
